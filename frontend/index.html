@@ -1,0 +1,74 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SafeRide Login</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <script>
+      async function loginUser(event) {
+        event.preventDefault();
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        try {
+          const res = await fetch("http://localhost:5000/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          });
+
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.message);
+
+          // Save email and role in localStorage for parent dashboard use
+          localStorage.setItem("userEmail", email);
+          localStorage.setItem("userRole", data.role);
+
+          // Redirect based on role
+          if (data.role === "parent") {
+            window.location.href = "parent-dashboard.html";
+          } else if (data.role === "teacher") {
+            window.location.href = "dashboard.html";
+          } else {
+            alert("Role not recognized");
+          }
+        } catch (err) {
+          document.getElementById("error").textContent = err.message;
+        }
+      }
+    </script>
+  </head>
+  <body class="flex items-center justify-center h-screen bg-gray-100">
+    <div class="bg-white shadow-xl rounded-2xl p-8 w-96">
+      <h1 class="text-2xl font-bold mb-4 text-center">SafeRide Login</h1>
+      <p id="error" class="text-red-500 text-sm mb-3"></p>
+      <form onsubmit="loginUser(event)">
+        <input
+          id="email"
+          type="email"
+          placeholder="Email"
+          class="w-full mb-3 p-2 border rounded-xl"
+          required
+        />
+        <input
+          id="password"
+          type="password"
+          placeholder="Password"
+          class="w-full mb-3 p-2 border rounded-xl"
+          required
+        />
+        <button
+          type="submit"
+          class="w-full bg-blue-600 text-white p-2 rounded-xl hover:bg-blue-700 transition"
+        >
+          Login
+        </button>
+      </form>
+    </div>
+  </body>
+</html>

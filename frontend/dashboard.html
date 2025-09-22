@@ -1,0 +1,63 @@
+<!-- dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SafeRide Dashboard</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/react-calendar/dist/Calendar.css"
+    />
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const tableBody = document.getElementById("table-body");
+        const sampleData = [
+          { name: "Ravi Kumar", class: "5A", bus: "Bus-12", status: "Present" },
+          { name: "Sita Devi", class: "6B", bus: "Bus-15", status: "Absent" },
+        ];
+
+        sampleData.forEach((student) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+          <td class="p-2">${student.name}</td>
+          <td class="p-2">${student.class}</td>
+          <td class="p-2">${student.bus}</td>
+          <td class="p-2 font-medium ${
+            student.status === "Present" ? "text-green-600" : "text-red-600"
+          }">${student.status}</td>
+        `;
+          tableBody.appendChild(row);
+        });
+      });
+    </script>
+  </head>
+  <body class="min-h-screen bg-gray-100 p-6">
+    <h1 class="text-3xl font-bold mb-6 text-center">SafeRide Dashboard</h1>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-white rounded-2xl shadow p-4 md:col-span-2">
+        <h2 class="text-xl font-semibold mb-4">Attendance Records</h2>
+        <table class="w-full border-collapse">
+          <thead>
+            <tr class="bg-gray-200 text-left">
+              <th class="p-2">Name</th>
+              <th class="p-2">Class</th>
+              <th class="p-2">Bus</th>
+              <th class="p-2">Status</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow p-4">
+        <h2 class="text-xl font-semibold mb-4">Monthly View</h2>
+        <input type="date" class="border p-2 rounded-xl w-full" />
+      </div>
+    </div>
+  </body>
+</html>
