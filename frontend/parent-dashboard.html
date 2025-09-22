@@ -1,78 +1,50 @@
-<!-- parent-dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Parent Dashboard - SafeRide</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Sample data from backend (replace with fetch API later)
-      const childData = {
-        name: "Ravi Kumar",
-        class: "5A",
-        bus: "Bus-12",
-        driver: "9876543210",
-        teacher: "9123456780",
-        status: "Present",
-        timeIn: "08:15 AM",
-        // timeOut: "03:30 PM"
-      };
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parent Dashboard - SafeRide</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<script src="config.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  const parentEmail = localStorage.getItem('userEmail');
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/attendance`);
+    const data = await res.json();
+    // Filter data for only this parent’s child
+    const child = data.find(c => c.parentEmail === parentEmail) || data[0]; // fallback sample
 
-      document.getElementById('child-name').textContent = childData.name;
-      document.getElementById('child-class').textContent = childData.class;
-      document.getElementById('child-bus').textContent = childData.bus;
-      document.getElementById('child-driver').textContent = childData.driver;
-      document.getElementById('child-teacher').textContent = childData.teacher;
-      document.getElementById('child-status').textContent = childData.status;
-      document.getElementById('child-timein').textContent = childData.timeIn;
-      document.getElementById('child-timeout').textContent = childData.timeOut;
-    });
-  </script>
+    document.getElementById('child-name').textContent = child.name;
+    document.getElementById('child-class').textContent = child.class;
+    document.getElementById('child-bus').textContent = child.bus;
+    document.getElementById('child-driver').textContent = child.driver;
+    document.getElementById('child-teacher').textContent = child.teacher;
+    document.getElementById('child-status').textContent = child.status;
+    document.getElementById('child-timein').textContent = child.timeIn;
+    document.getElementById('child-timeout').textContent = child.timeOut;
+  } catch (err) {
+    console.error('Error fetching child data:', err);
+  }
+});
+</script>
 </head>
 <body class="min-h-screen bg-gray-100 p-6">
-  <h1 class="text-3xl font-bold mb-6 text-center">SafeRide - Parent Dashboard</h1>
-
-  <div class="max-w-3xl mx-auto bg-white shadow-xl rounded-2xl p-6">
-    <h2 class="text-2xl font-semibold mb-4">Child Attendance & Info</h2>
-    
-    <table class="w-full border-collapse">
-      <tbody>
-        <tr class="border-b">
-          <td class="p-2 font-medium">Name</td>
-          <td class="p-2" id="child-name"></td>
-        </tr>
-        <tr class="border-b">
-          <td class="p-2 font-medium">Class</td>
-          <td class="p-2" id="child-class"></td>
-        </tr>
-        <tr class="border-b">
-          <td class="p-2 font-medium">Bus Number</td>
-          <td class="p-2" id="child-bus"></td>
-        </tr>
-        <tr class="border-b">
-          <td class="p-2 font-medium">Driver Contact</td>
-          <td class="p-2" id="child-driver"></td>
-        </tr>
-        <tr class="border-b">
-          <td class="p-2 font-medium">Teacher Contact</td>
-          <td class="p-2" id="child-teacher"></td>
-        </tr>
-        <tr class="border-b">
-          <td class="p-2 font-medium">Status</td>
-          <td class="p-2 font-green-600" id="child-status"></td>
-        </tr>
-        <tr class="border-b">
-          <td class="p-2 font-medium">Time In</td>
-          <td class="p-2" id="child-timein"></td>
-        </tr>
-        <!-- <tr class="border-b">
-          <td class="p-2 font-medium">Time Out</td>
-          <td class="p-2" id="child-timeout"></td>
-        </tr> -->
-      </tbody>
-    </table>
-  </div>
+<h1 class="text-3xl font-bold mb-6 text-center">Parent Dashboard</h1>
+<div class="max-w-3xl mx-auto bg-white shadow-xl rounded-2xl p-6">
+<h2 class="text-2xl font-semibold mb-4">Child Attendance & Info</h2>
+<table class="w-full border-collapse">
+<tbody>
+<tr class="border-b"><td class="p-2 font-medium">Name</td><td class="p-2" id="child-name"></td></tr>
+<tr class="border-b"><td class="p-2 font-medium">Class</td><td class="p-2" id="child-class"></td></tr>
+<tr class="border-b"><td class="p-2 font-medium">Bus Number</td><td class="p-2" id="child-bus"></td></tr>
+<tr class="border-b"><td class="p-2 font-medium">Driver Contact</td><td class="p-2" id="child-driver"></td></tr>
+<tr class="border-b"><td class="p-2 font-medium">Teacher Contact</td><td class="p-2" id="child-teacher"></td></tr>
+<tr class="border-b"><td class="p-2 font-medium">Status</td><td class="p-2" id="child-status"></td></tr>
+<tr class="border-b"><td class="p-2 font-medium">Time In</td><td class="p-2" id="child-timein"></td></tr>
+<tr class="border-b"><td class="p-2 font-medium">Time Out</td><td class="p-2" id="child-timeout"></td></tr>
+</tbody>
+</table>
+</div>
 </body>
 </html>
